@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Vacancy;
 use Illuminate\Database\Seeder;
 
 class VacancySeeder extends Seeder
@@ -13,6 +14,6 @@ class VacancySeeder extends Seeder
      */
     public function run()
     {
-        //
+        Vacancy::factory()->count(100)->create();
     }
 }

@@ -22,7 +22,12 @@ class VacancyFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->name(),
+            'amount_workers' => $this->faker->numberBetween(1, 30),
+            'salary' => $this->faker->numberBetween(500, 7000) . '$',
+            'created_by' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

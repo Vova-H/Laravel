@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Organization;
 use Illuminate\Database\Seeder;
 
 class OrganizationSeeder extends Seeder
@@ -13,6 +14,9 @@ class OrganizationSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Organization::factory()->count(50)->create();
+        Organization::factory()->count(50)->state([
+            'vacancy_id'=>2
+        ]);
     }
 }
