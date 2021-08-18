@@ -33,7 +33,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->update($request->all());
-        return $user;
+        return response()->json($user, 200);
     }
 
     public function destroy($id)
