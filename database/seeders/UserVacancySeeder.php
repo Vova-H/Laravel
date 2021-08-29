@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\UserVacancy;
 use Illuminate\Database\Seeder;
 
-class UserSeeder extends Seeder
+class UserVacancySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,8 +14,6 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-        User::factory()->count(100)->create();
-
+        UserVacancy::factory()->count(100)->create();
     }
 }

@@ -13,9 +13,9 @@ class UserOrganizationFk extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('organization_id')->nullable()->after('role');
-            $table->foreign('organization_id')->references('id')->on('organizations');
+        Schema::table('organizations', function (Blueprint $table) {
+            $table->unsignedBigInteger('user_id')->nullable()->after('city');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -26,9 +26,9 @@ class UserOrganizationFk extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['organization_id']);
-            $table->dropColumn('organization_id');
+        Schema::table('organizations', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
         });
     }
 }

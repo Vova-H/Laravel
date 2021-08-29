@@ -33,7 +33,6 @@ class UserFactory extends Factory
             'country'=>$this->faker->country(),
             'city'=>$this->faker->city(),
             'phone'=>$this->faker->phoneNumber(),
-            'organization_id'=>1,
             'role'=>'user',
             'created_at'=>now(),
             'updated_at'=>now(),

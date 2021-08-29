@@ -14,9 +14,7 @@ class OrganizationSeeder extends Seeder
      */
     public function run()
     {
-        Organization::factory()->count(50)->create();
-        Organization::factory()->count(50)->state([
-            'vacancy_id'=>2
-        ]);
+        Organization::factory()->count(100)->create();
+
     }
 }

@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
 
@@ -32,11 +32,11 @@ class User extends Authenticatable
         'role',
     ];
 
-//    public function __construct(array $attributes = [])
-//    {
-//        parent::__construct($attributes);
-//        return $this->attributes['created_by'] = Auth::user()->name;
-//    }
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->attributes['created_by'] = Auth::id();
+    }
 
     /**
      * The attributes that should be hidden for arrays.
@@ -57,10 +57,35 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    //////
+    protected $appends = [
+        'token'
+    ];
+
+    public function getTokenAttribute()
+    {
+        return $this->createToken('token-name')->plainTextToken;
+    }
+
+    ////
+
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = Hash::make($value);
+    }
+
+    //////
 
     public function organizations()
     {
         return $this->hasMany(Organization::class);
     }
+
+    public function vacancies()
+    {
+        return $this->belongsToMany(Vacancy::class, 'user_vacancies', 'user_id', 'vacancy_id');
+    }
+
 
 }

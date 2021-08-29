@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('country');
             $table->string('city');
             $table->string('phone');
-            $table->string('role');
+            $table->string('role')->default('user');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

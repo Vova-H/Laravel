@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateOrganizationRequest;
+use App\Http\Resources\OrganizationResource;
 use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,12 +18,17 @@ class OrganizationController extends Controller
         return Organization::all();
     }
 
-    public function show($id)
+    public function show(Request $request,Organization $organization)
     {
-        return Organization::find($id);
+        if ($request->user()->cannot('view', $organization)) {
+            return response()->json('access denied !', 200);
+        }
+
+//        $vacancy = $organization->vacancies;
+        return response()->json(OrganizationResource::make($organization), 200);
     }
 
-    public function store(CreateOrganizationRequest  $request)
+    public function store(CreateOrganizationRequest $request)
     {
         // ВАРИАНТ ЧЕРЕЗ CREATE()
         $organization = Organization::create($request->validated());
@@ -33,14 +39,14 @@ class OrganizationController extends Controller
 
     public function update(CreateOrganizationRequest $request, Organization $organization)
     {
-//        $vacancy = Vacancy::find($id);
+//        $vacancy = Vacancy::find($id); поменять $id на $organization
         $organization->update($request->validated());
         return response()->json($organization, 200);
     }
 
-    public function delete($id)
+    public function delete(Organization $organization)
     {
-        $organization = Organization::find($id);
+//        $organization = Organization::find($id);
         if ($organization) {
             $organization->delete();
         }

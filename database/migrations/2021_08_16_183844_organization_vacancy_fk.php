@@ -13,9 +13,9 @@ class OrganizationVacancyFk extends Migration
      */
     public function up()
     {
-        Schema::table('organizations', function (Blueprint $table) {
-            $table->unsignedBigInteger('vacancy_id')->nullable()->after('city');
-            $table->foreign('vacancy_id')->references('id')->on('vacancies');
+        Schema::table('vacancies', function (Blueprint $table) {
+            $table->unsignedBigInteger('organization_id')->nullable()->after('salary');
+            $table->foreign('organization_id')->references('id')->on('organizations');
         });
     }
 
@@ -26,9 +26,9 @@ class OrganizationVacancyFk extends Migration
      */
     public function down()
     {
-        Schema::table('organizations', function (Blueprint $table) {
-            $table->dropForeign(['vacancy_id']);
-            $table->dropColumn('vacancy_id');
+        Schema::table('vacancies', function (Blueprint $table) {
+            $table->dropForeign(['organization_id']);
+            $table->dropColumn('organization_id');
         });
     }
 }

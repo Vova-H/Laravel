@@ -15,7 +15,6 @@ class VacancyCreatedBy extends Migration
     {
         Schema::table('vacancies', function (Blueprint $table) {
             $table->unsignedBigInteger('created_by')->nullable()->after('salary');
-            $table->foreign('created_by')->references('id')->on('organizations');
         });
     }
 
@@ -27,7 +26,6 @@ class VacancyCreatedBy extends Migration
     public function down()
     {
         Schema::table('vacancies', function (Blueprint $table) {
-            $table->dropForeign(['created_by']);
             $table->dropColumn('created_by');
         });
     }

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\UserVacancy;
 use App\Models\Vacancy;
 use Illuminate\Database\Seeder;
 
@@ -19,7 +20,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
 //           UserSeeder::class,
 //            OrganizationSeeder::class,
-            VacancySeeder::class
+//            VacancySeeder::class,
+            UserVacancySeeder::class
         ]);
     }
 }

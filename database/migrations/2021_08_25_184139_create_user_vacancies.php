@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UserCreatedBy extends Migration
+class CreateUserVacancies extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class UserCreatedBy extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('created_by')->nullable()->after('role');
+        Schema::create('user_vacancies', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
         });
     }
 
@@ -25,8 +26,8 @@ class UserCreatedBy extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('created_by');
-        });
+        Schema::dropIfExists('user_vacancies');
     }
 }
+
+

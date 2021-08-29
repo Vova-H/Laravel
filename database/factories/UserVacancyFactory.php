@@ -4,16 +4,18 @@ namespace Database\Factories;
 
 use App\Models\Organization;
 use App\Models\User;
+use App\Models\UserVacancy;
+use App\Models\Vacancy;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class OrganizationFactory extends Factory
+class UserVacancyFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Organization::class;
+    protected $model = UserVacancy::class;
 
     /**
      * Define the model's default state.
@@ -22,15 +24,13 @@ class OrganizationFactory extends Factory
      */
     public function definition()
     {
-        $users = User::all()->pluck('id')->toArray();
-
+        $user_id = User::all()->pluck('id')->toArray();
+        $vacancy_id = Vacancy::all()->pluck('id')->toArray();
         return [
-            'name' => $this->faker->company(),
-            'country'=>$this->faker->country(),
-            'city'=>$this->faker->city(),
-            'user_id'=>$this->faker->randomElement($users),
             'created_at'=>now(),
             'updated_at'=>now(),
+            'user_id' => $this->faker->randomElement($user_id),
+            'vacancy_id' => $this->faker->randomElement($vacancy_id),
         ];
     }
 }
