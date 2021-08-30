@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BookVacancyRequest;
 use App\Http\Requests\CreateVacancyRequest;
+use App\Http\Requests\VacancyUpdateRequest;
 use App\Http\Resources\VacancyResource;
 use App\Models\UserVacancy;
 use App\Models\Vacancy;
@@ -18,18 +19,25 @@ class VacancyController extends Controller
         if ($request->user()->cannot('viewAny', $vacancy)) {
             return response()->json('access denied !', 200);
         }
-        $vacancy = Vacancy::has('users', '<', DB::raw('vacancies.amount_workers'))->Limit(10)->get();
+        // вариант для юзера и работодателя
+//        $vacancy = Vacancy::has('users', '<', DB::raw('vacancies.amount_workers'))->Limit(10)->get();
+//        return response()->json($vacancy, 200);
+
+        // вариант для работодателя
+        $vacancy = Vacancy::all()->load('users')->where('created_by', '=', Auth::id());
         return response()->json($vacancy, 200);
     }
 
-    public function show(Vacancy $vacancy)
+    public function show(Request $request, Vacancy $vacancy)
     {
-        return response()->json(VacancyResource::make($vacancy), 200);
+        if ($request->user()->cannot('view', $vacancy)) {
+            return response()->json('access denied !', 200);
+        }
+        return response()->json(VacancyResource::make($vacancy->load('users')), 200);
     }
 
     public function store(CreateVacancyRequest $request, Vacancy $vacancy)
     {
-//        dd($request);
         if ($request->user()->cannot('create', $vacancy)) {
             return response()->json('access denied !', 200);
         }
@@ -40,9 +48,11 @@ class VacancyController extends Controller
         return response()->json($vacancy, 201);
     }
 
-    public function update(CreateVacancyRequest $request, Vacancy $vacancy)
+    public function update(VacancyUpdateRequest $request, Vacancy $vacancy)
     {
-//        $vacancy = Vacancy::find($id);
+        if ($request->user()->cannot('update', $vacancy)) {
+            return response()->json('access denied !', 200);
+        }
         $vacancy->update($request->validated());
         return response()->json($vacancy, 200);
     }
@@ -56,15 +66,36 @@ class VacancyController extends Controller
         return response()->json(null, 200);
     }
 
-    public function Book(BookVacancyRequest $request)
+    public function Book(BookVacancyRequest $request, Vacancy $vacancy)
     {
+        if ($request->user()->cannot('book', $vacancy)) {
+            return response()->json('access denied !', 200);
+        }
+        $vacancy = DB::table('user_vacancies')->where('user_id', '=', Auth::id())->where('vacancy_id', '=', $request->vacancy_id);
+
+        if ($vacancy) {  //// не работает
+            return 'You already book on this vacancy';
+        }
+
         $book = UserVacancy::create($request->validated());
         return response()->json($book, 201);
     }
 
-    public function UnBook($id_vacancy)
+    public function UnBook($vacancy_id)
     {
-        $vacancy = DB::table('user_vacancies')->where('user_id', '=', Auth::id())->where('vacancy_id', '=', $id_vacancy);
+        $vacancy = DB::table('user_vacancies')->where('user_id', '=', Auth::id())->where('vacancy_id', '=', $vacancy_id);
+        if ($vacancy) {
+            $vacancy->delete();
+        }
+        return response()->json(null, 200);
+    }
+
+    public function reject($vacancy_id, Vacancy $vacancy, Request $request, $user_id)
+    {
+        if ($request->user()->cannot('reject', $vacancy)) {
+            return response()->json('access denied !', 200);
+        }
+        $vacancy = DB::table('user_vacancies')->where('user_id', '=', $user_id)->where('vacancy_id', '=', $vacancy_id);
         if ($vacancy) {
             $vacancy->delete();
         }

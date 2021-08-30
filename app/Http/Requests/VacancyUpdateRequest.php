@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateVacancyRequest extends FormRequest
+class VacancyUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class CreateVacancyRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|string|max:150',
+            'name'=>'nullable|string|max:150',
             'amount_workers'=>'nullable|int',
             'salary'=>'nullable|string|max:100'
         ];

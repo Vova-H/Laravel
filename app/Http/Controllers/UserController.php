@@ -41,15 +41,12 @@ class UserController extends Controller
         return response()->json(UserResource::make($user), 200);
     }
 
-    public function update(UpdateUserRequest $request, User $user)  /// проблема с юзером, приходит не то, что нужно
+    public function update(UpdateUserRequest $request, User $user)
     {
-//        $user = Auth::user();
-//        dd($user);
         if ($request->user()->cannot('update', $user)) {
             return response()->json('access denied !', 200);
         }
         $user->update($request->validated());
-
         return response()->json($user, 200);
     }
 

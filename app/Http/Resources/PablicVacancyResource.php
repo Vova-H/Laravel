@@ -4,12 +4,12 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class VacancyResource extends JsonResource
+class PablicVacancyResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request)
@@ -19,7 +19,6 @@ class VacancyResource extends JsonResource
             'name' => $this->name,
             'amount_workers' => $this->amount_workers,
             'organization' => OrganizationResource::make($this->organization),
-            'workers_book' => UserResource::collection($this->whenLoaded('users')),
         ];
     }
 }

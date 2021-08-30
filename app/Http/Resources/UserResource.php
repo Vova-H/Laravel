@@ -19,8 +19,8 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'phone' => $this->phone,
             'role' => $this->role,
-            'organization' => OrganizationResource::collection($this->organizations),
-            'vacancies' => VacancyResource::collection($this->vacancies),
+            'organization' => OrganizationResource::collection($this->whenLoaded('organizations')),
+            'vacancies' => VacancyResource::collection($this->whenLoaded('vacancies')),
         ];
     }
 }

@@ -50,7 +50,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     //booking
     Route::post('/book', [VacancyController::class, 'Book']);
-    Route::delete('/unBook/{id_vacancy}', [VacancyController::class, 'UnBook']);
+    Route::delete('/unBook/{vacancy_id}', [VacancyController::class, 'UnBook']);
+    Route::delete('/reject/{vacancy_id}/{user_id}', [VacancyController::class, 'reject']);
 });
 
 
